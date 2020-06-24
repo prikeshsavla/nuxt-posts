@@ -1,51 +1,6 @@
 <template
   ><div>
-    <nav class="navbar has-shadow">
-      <div class="container">
-        <div class="navbar-brand">
-          <a class="navbar-item" href="../">
-            <img
-              src="http://bulma.io/images/bulma-logo.png"
-              alt="Bulma: a modern CSS framework based on Flexbox"
-            />
-          </a>
-          <div
-            class="navbar-burger burger"
-            aria-label="menu"
-            aria-expanded="false"
-            data-target="navMenu"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-        </div>
-        <div id="navMenu" class="navbar-menu">
-          <div class="navbar-end">
-            <div class="navbar-item has-dropdown">
-              <a class="navbar-link">
-                Menu
-              </a>
-              <div class="navbar-dropdown">
-                <a class="navbar-item">
-                  Dashboard
-                </a>
-                <a class="navbar-item">
-                  Profile
-                </a>
-                <a class="navbar-item">
-                  Settings
-                </a>
-                <hr class="navbar-divider" />
-                <div class="navbar-item">
-                  Logout
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </nav>
+    <nav-bar />
 
     <div class="manage-page">
       <div class="columns mail-app">
@@ -61,41 +16,24 @@
         </aside>
         <div class="column is-4 messages hero is-fullheight" id="message-feed">
           <div class="inbox-messages" id="inbox-messages">
-            <div class="card">
-              <div class="card-content">
-                <div class="msg-header">
-                  <span class="msg-from"><small>From Filip Jerga</small></span>
-                  <span class="msg-timestamp"></span>
-                  <span class="msg-attachment"
-                    ><i class="fa fa-paperclip"></i
-                  ></span>
-                </div>
-                <div class="msg-subject">
-                  <span class="msg-subject"
-                    ><strong id="fake-subject-1">Some Title</strong></span
-                  >
-                </div>
-                <div class="msg-snippet">
-                  <p id="fake-snippet-1">Some Subtitle</p>
-                </div>
-              </div>
-            </div>
-            <div class="card">
+            <div class="card" v-for="post in posts" :key="post._id">
               <div class="card-content">
                 <div class="msg-header">
                   <span class="msg-from"><small>From Filip Jerga </small></span>
-                  <span class="msg-timestamp"></span>
+                  <span class="msg-timestamp">
+                    {{ post.date | formatDate }}
+                  </span>
                   <span class="msg-attachment"
                     ><i class="fa fa-paperclip"></i
                   ></span>
                 </div>
                 <div class="msg-subject">
                   <span class="msg-subject"
-                    ><strong id="fake-subject-1">Some Title 2</strong></span
+                    ><strong id="fake-subject-1">{{ post.title }}</strong></span
                   >
                 </div>
                 <div class="msg-snippet">
-                  <p id="fake-snippet-1">Some Subtitle 2</p>
+                  <p id="fake-snippet-1">{{ post.subtitle }}</p>
                 </div>
               </div>
             </div>
@@ -142,7 +80,16 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+
+  },
+  computed:{
+     ...mapState({
+      posts: (state) => state.posts
+    })
+  }
+};
 </script>
 
 <style lang="scss" scoped>

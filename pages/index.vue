@@ -27,35 +27,43 @@
             <!-- end of side bar -->
           </div>
         </div>
+        <!-- <form action="">
+
+<input type="text" name="" id="" v-model="form.title">
+<input type="text" name="" id="" v-model="form.subtitle">
+      {{isFormValid()}}
+        </form> -->
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
   data() {
     return {
       title: "Heya",
-      posts: [
-        {
-          _id: 1,
-          title: "Heya",
-          subtitle: "Hello",
-          author: "Prik S",
-          date: new Date(),
-          isRead: true
-        },
-        {
-          _id: 2,
-          title: "Heya 2",
-          subtitle: "Hello Again",
-          author: "Prik S",
-          date: new Date(),
-          isRead: false
-        }
-      ]
+      form:{
+        title: 'some title',
+        subtitle: 'subtitle'
+      }
     };
+  },
+  computed:{
+    // isFormValid(){
+    //   console.log('is form valid called')
+    //   return this.form.title ? true: false
+    // },
+    ...mapState({
+      posts: (state) => state.posts
+    })
+  },
+  methods: {
+    // isFormValid(){
+    //   console.log('is form valid called')
+    //   return this.form.title ? true: false
+    // },
   }
 };
 </script>
