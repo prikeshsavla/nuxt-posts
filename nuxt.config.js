@@ -1,4 +1,3 @@
-
 export default {
   /*
    ** Nuxt rendering mode
@@ -72,5 +71,8 @@ export default {
         }
       }
     }
-  }
+  },
+  serverMiddleware: [
+    '~/api/routes/index'
+  ]
 };

@@ -10,7 +10,7 @@
         </a>
         <div
           class="navbar-burger burger"
-          @click="toggleDropdown"
+          @click="toggleisActive"
           aria-label="menu"
           aria-expanded="false"
           data-target="navMenu"
@@ -20,28 +20,27 @@
           <span></span>
         </div>
       </div>
-      <div id="navMenu" class="navbar-menu" :class="{'is-active': isActive}"
-      @click="toggleDropdown"
+      <div
+        id="navMenu"
+        class="navbar-menu"
+        :class="{ 'is-active': isActive }"
+        @click="toggleisActive"
       >
         <div class="navbar-end">
-          <div class="navbar-item has-dropdown" :class="{'is-active': isActive}">
-            <a class="navbar-link" >
+          <div
+            class="navbar-item has-dropdown"
+            :class="{ 'is-active': isActive }"
+          >
+            <a class="navbar-link">
               Menu
             </a>
             <div class="navbar-dropdown">
-              <a class="navbar-item">
-                Dashboard
-              </a>
-              <a class="navbar-item">
-                Profile
-              </a>
-              <a class="navbar-item">
-                Settings
-              </a>
-              <hr class="navbar-divider" />
-              <div class="navbar-item">
-                Logout
-              </div>
+              <nuxt-link to="/" class="navbar-item">
+                Home
+              </nuxt-link>
+              <nuxt-link to="/manage" class="navbar-item">
+                Manage
+              </nuxt-link>
             </div>
           </div>
         </div>
@@ -52,13 +51,16 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
       isActive: false
-    }
+    };
   },
   methods: {
-    toggleDropdown(){
+    navigateTo(path){
+        this.$router.push(path)
+    },
+    toggleisActive() {
       this.isActive = !this.isActive;
     }
   }

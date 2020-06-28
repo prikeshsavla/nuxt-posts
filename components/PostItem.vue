@@ -6,7 +6,7 @@
         <h5 class="subtitle is-5">{{ subtitle }}</h5>
       </a>
       <div class="post-footer">
-        by Filip Jerga, {{ date | formatDate("LL") }}
+        by Prik, {{ date | formatDate("LL") }}
       </div>
     </div>
     <div class="post-right">
@@ -30,7 +30,7 @@ export default {
       required: true
     },
     date: {
-      type: Date,
+      type: Number,
       required: true
     },
     isRead: {

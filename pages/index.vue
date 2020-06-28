@@ -1,7 +1,9 @@
 <template>
   <div>
     <nav-bar />
+
     <!-- Navigation -->
+
     <div class="blogs-page">
       <div class="main-content">
         <div class="container">
@@ -17,7 +19,7 @@
                   :key="post._id"
                   :title="post.title"
                   :subtitle="post.subtitle"
-                  :date="post.date"
+                  :date="post.createdAt"
                   :isRead="post.isRead"
                 />
                 </div>
@@ -40,6 +42,7 @@
 
 <script>
 import {mapState} from 'vuex'
+import {fetchPostsAPI} from '~/store/post'
 export default {
   data() {
     return {
@@ -50,20 +53,21 @@ export default {
       }
     };
   },
+  fetch({store}){
+     if(store.getters['post/hasEmptyItems']){
+       console.log("fetch in index page")
+        return store.dispatch("post/fetchPosts");
+    }
+  },
+
   computed:{
-    // isFormValid(){
-    //   console.log('is form valid called')
-    //   return this.form.title ? true: false
-    // },
-    ...mapState({
-      posts: (state) => state.posts
-    })
+
+   posts(){
+     return this.$store.state.post.items
+   }
   },
   methods: {
-    // isFormValid(){
-    //   console.log('is form valid called')
-    //   return this.form.title ? true: false
-    // },
+
   }
 };
 </script>
