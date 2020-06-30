@@ -16,9 +16,7 @@ app.get("/", function(req, res) {
 
 // on the request to root (localhost:3000/)
 app.get("/posts", function(req, res) {
-  res.json({
-    posts: initialData
-  });
+  res.json(initialData);
 });
 
 app.post("/posts", function(req, res) {

@@ -39,6 +39,10 @@
           ></textarea>
         </div>
       </div>
+      <div class="markdown">
+        <label for="" class="label">Content Preview</label>
+        <div v-html="compiledMarkdown()"></div>
+      </div>
     </form>
   </modal>
 </template>
@@ -61,10 +65,17 @@ export default {
       this.form.content = "";
     },
     createPost({ closeModal }) {
-      this.$store.dispatch("post/createPost", {...this.form} );
+      this.$store.dispatch("post/createPost", { ...this.form });
       closeModal();
       this.resetForm();
       console.log(this.form);
+    },
+    compiledMarkdown() {
+      if (process.client) {
+        return marked(this.form.content, { sanitize: true });
+      } else {
+        return "";
+      }
     }
   }
 };

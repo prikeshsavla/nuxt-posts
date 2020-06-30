@@ -1,17 +1,15 @@
 <template>
   <div class="post">
     <div class="post-content">
-      <a class="post-header post-header-link clickable">
+      <nuxt-link :to="`/posts/${id}`" class="post-header post-header-link clickable">
         <h4 class="title is-4">{{ title }}</h4>
         <h5 class="subtitle is-5">{{ subtitle }}</h5>
-      </a>
-      <div class="post-footer">
-        by Prik, {{ date | formatDate("LL") }}
-      </div>
+      </nuxt-link>
+      <div class="post-footer">by Prik, {{ date | formatDate("LL") }}</div>
     </div>
     <div class="post-right">
       <label class="checkbox">
-        <input type="checkbox" :checked="isRead" />
+        <input type="checkbox" @change="togglePost(id)" :checked="isArchived" />
         Read
       </label>
     </div>
@@ -21,6 +19,10 @@
 <script>
 export default {
   props: {
+    id: {
+      type: String,
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -36,6 +38,20 @@ export default {
     isRead: {
       type: Boolean,
       required: true
+    }
+  },
+
+  computed: {
+    archivedPosts() {
+      return this.$store.state.post.archivedPosts;
+    },
+    isArchived() {
+      return this.archivedPosts.includes(this.id);
+    }
+  },
+  methods: {
+    togglePost(id) {
+      this.$store.dispatch("post/togglePost", id);
     }
   }
 };

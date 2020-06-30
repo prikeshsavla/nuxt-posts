@@ -11,16 +11,27 @@ export function fetchPostsAPI() {
 
 export const state = () => {
   return {
-    items: []
+    items: [],
+    archivedPosts: [],
+    item: {}
   };
 };
 
 // Spot to send request to a server usually actions resolve into some data
-
 export const actions = {
   fetchPosts({ commit }) {
-    return fetchPostsAPI().then(posts => {
+    return this.$axios.$get("/api/posts").then(({ posts }) => {
       commit("setPosts", posts);
+      return posts;
+    });
+  },
+  fetchPostById({ commit }, postId) {
+
+    return this.$axios.$get(`/api/posts`).then(({ posts }) => {
+      const selectedPost = posts.find(post => post._id === postId);
+      console.log(selectedPost);
+      commit("setPost", selectedPost);
+      return selectedPost;
     });
   },
   createPost({ commit }, postData) {
@@ -32,7 +43,6 @@ export const actions = {
     postData.isRead = false;
 
     return this.$axios.$post("/api/posts", postData).then(res => {
-      console.log(res);
       commit("addPost", postData);
     });
   },
@@ -46,7 +56,6 @@ export const actions = {
     return this.$axios
       .$patch(`/api/posts/${postData._id}`, postData)
       .then(res => {
-        console.log(res);
         commit("replacePost", { post: postData, index });
         return postData;
       });
@@ -57,10 +66,32 @@ export const actions = {
     });
 
     return this.$axios.$delete(`/api/posts/${postId}`).then(res => {
-      console.log(res);
-      console.log(index, postId, state.items);
       if (index !== -1) commit("removePost", index);
     });
+  },
+  fetchArchivedPosts({ commit }) {
+    var archivedPosts = localStorage.getItem("archived_posts");
+    if (archivedPosts) {
+      commit("setArchivedPosts", JSON.parse(archivedPosts));
+      return archivedPosts;
+    } else {
+      localStorage.setItem("archived_posts", JSON.stringify([]));
+      commit("setArchivedPosts", []);
+      return [];
+    }
+  },
+  togglePost({ commit, state, dispatch }, postId) {
+    if (state.archivedPosts.includes(postId)) {
+      const index = state.archivedPosts.indexOf(postId);
+      commit("removeArchivedPost", index);
+    } else {
+      commit("addArchivedPost", postId);
+    }
+    dispatch("persistArchivedPosts", state);
+    return postId;
+  },
+  persistArchivedPosts({ state }) {
+    localStorage.setItem("archived_posts", JSON.stringify(state.archivedPosts));
   }
 };
 
@@ -77,7 +108,18 @@ export const mutations = {
   },
   removePost(state, index) {
     Vue.delete(state.items, index);
-    // Vue.set(state.items, index, post);
+  },
+  setArchivedPosts(state, archivedPosts) {
+    Vue.set(state.items, "archivedPosts", archivedPosts);
+  },
+  addArchivedPost(state, postId) {
+    state.archivedPosts.push(postId);
+  },
+  removeArchivedPost(state, index) {
+    Vue.delete(state.archivedPosts, index);
+  },
+  setPost(state, post) {
+    state.item = post;
   }
 };
 

@@ -24,12 +24,15 @@ export default {
         content: process.env.npm_package_description || ""
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
+    script: [{ src: "https://cdn.jsdelivr.net/npm/marked/marked.min.js" }]
   },
   /*
    ** Global CSS
    */
-  css: [],
+  css: [
+    '@/assets/scss/main.scss'
+  ],
   /*
    ** Plugins to load before mounting the App
    ** https://nuxtjs.org/guide/plugins
@@ -72,7 +75,5 @@ export default {
       }
     }
   },
-  serverMiddleware: [
-    '~/api/routes/index'
-  ]
+  serverMiddleware: ["~/api/routes/index"]
 };

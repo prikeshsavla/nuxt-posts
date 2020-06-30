@@ -33,7 +33,14 @@
           ></textarea>
         </div>
       </div>
+
       <button class="button is-primary">Update</button>
+
+       <div class="markdown">
+        <label for="" class="label">Content Preview</label>
+        <div v-html="compiledMarkdown()">
+        </div>
+      </div>
     </form>
   </div>
 </template>
@@ -55,6 +62,13 @@ export default {
     updatePost() {
       this.$store.dispatch("post/updatePost", { ...this.post });
     },
+    compiledMarkdown() {
+      if (process.client) {
+        return marked(this.post.content, { sanitize: true });
+      } else {
+        return "";
+      }
+    }
   }
 };
 </script>
